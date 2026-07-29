@@ -1,0 +1,16 @@
+# Build
+build/
+compile_commands.json
+*.o
+*.out
+
+# Rendered outputs
+*.ppm
+*.png
+
+# Profiling
+gmon.out
+*.dSYM/
+
+# macOS
+.DS_Store
