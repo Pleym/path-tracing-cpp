@@ -26,9 +26,10 @@ inline double fastRandomDouble(unsigned int& seed)
 class Lambertian:public Material
 {
     public:
-        Vec3 albedo;     // Réflectance diffuse
-        Lambertian(const Vec3& a):albedo(a){}
-        virtual bool scatter(const Ray& ray_in,const HitInfo& hit,Vec3& attenuation,Ray& scattered)const;
+        Vec3 albedo;      // Réflectance diffuse
+        double brightness;// Facteur d'atténuation, 1.0 = albedo brut
+        Lambertian(const Vec3& a,double brightness=1.0):albedo(a),brightness(brightness){}
+        bool scatter(const Ray& ray_in,const HitInfo& hit,Vec3& attenuation ,Ray& scattered)const override;
         // Assure que la direction de diffusion est dans l'hémisphère de la normale
         Vec3 randomInHemisphere(const Vec3& normal,unsigned int& seed)const;// Assure que la direction de diffusion est dans l'hémisphère de la normale
     private:

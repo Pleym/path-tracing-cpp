@@ -8,7 +8,7 @@ bool Lambertian::scatter(const Ray& ray_in,const HitInfo& hit,Vec3& attenuation,
         scatter_direction=hit.normal;
     }
     scattered=Ray(hit.intersection,scatter_direction);
-    attenuation=albedo;
+    attenuation=albedo*brightness;
     return true;
 }
 
