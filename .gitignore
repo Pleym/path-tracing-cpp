@@ -14,3 +14,11 @@ gmon.out
 
 # macOS
 .DS_Store
+
+# ./file
+.*
+
+#CmakeFiles
+CMakeFiles/
+CMakeCache.txt
+CMakeLists.txt
