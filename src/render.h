@@ -21,14 +21,14 @@ Vec3 calculateColor(const Ray& ray, const std::vector<Object*>& scene,int depth)
     {
         Material* mat=hitInfo.hitObject->material;
         Emissive* light=dynamic_cast<Emissive*>(mat);
-        if (light) 
+        if (light)
         {
             // S'il s'agit d'une source lumineuse, renvoie sa couleur d'émission (seules les directions orientées vers l'avant sont autorisées)
-            if (hitInfo.front_face) 
+            if (hitInfo.front_face)
             {
                 return light->emitted();
-            } 
-            else 
+            }
+            else
             {
                 return Vec3(0, 0, 0);
             }
@@ -143,7 +143,7 @@ void renderMLT(int width,int height,const std::vector<Object*>& scene,char* outp
     delete[] img;
 }
 
-std::vector<Object*> createScene() 
+std::vector<Object*> createScene()
 {
     // Material Definition
     Lambertian* red_wall = new Lambertian(Vec3(0.65, 0.05, 0.05));
@@ -179,8 +179,8 @@ std::vector<Object*> createScene()
 }
 
 /*
-    A simple scene used only for performance testing, 
-    with very few light bounces and light CPU load, 
+    A simple scene used only for performance testing,
+    with very few light bounces and light CPU load,
     very suitable for performance testing
 */
 std::vector<Object*> createTestScene()
@@ -189,8 +189,8 @@ std::vector<Object*> createTestScene()
     Emissive* light = new Emissive(Vec3(8.0, 8.0, 8.0));
     Lambertian* floor_material = new Lambertian(Vec3(0.7, 0.7, 0.7));
 
-    scene.push_back(new Sphere(light, 0.8, Vec3(0, 1, -3))); 
-    scene.push_back(new AABB(floor_material, Vec3(-5, -1, -5), Vec3(5, 0, 5))); 
+    scene.push_back(new Sphere(light, 0.8, Vec3(0, 1, -3)));
+    scene.push_back(new AABB(floor_material, Vec3(-5, -1, -5), Vec3(5, 0, 5)));
 
     return scene;
 }
