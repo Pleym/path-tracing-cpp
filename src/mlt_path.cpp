@@ -1,7 +1,7 @@
 #include "mlt_path.h"
 #include <cmath>
 
-double randomDoubleThread(unsigned int& seed) 
+double randomDoubleThread(unsigned int& seed)
 {
     static thread_local std::mt19937 generator; // Each thread is independent
     generator.seed(seed);
@@ -10,7 +10,7 @@ double randomDoubleThread(unsigned int& seed)
     return distribution(generator);
 }
 
-std::vector<PathVertex> generatePath(const Ray& ray, const std::vector<Object*>& scene, int max_depth) 
+std::vector<PathVertex> generatePath(const Ray& ray, const std::vector<Object*>& scene, int max_depth)
 {
     std::vector<PathVertex> path;
     Ray currentRay = ray;
@@ -42,7 +42,7 @@ std::vector<PathVertex> generatePath(const Ray& ray, const std::vector<Object*>&
 }
 
 // Support light source sampling to check whether the luminous material is hit in the path
-Vec3 evaluatePath(const std::vector<PathVertex>& path) 
+Vec3 evaluatePath(const std::vector<PathVertex>& path)
 {
     Vec3 result(0,0,0);
     for (auto& v : path) {
@@ -52,11 +52,8 @@ Vec3 evaluatePath(const std::vector<PathVertex>& path)
         }
     }
     if (result.x==0 && result.y==0 && result.z==0) {
-        // Miss or no light source → add some ambient diffuse reflection
-        Vec3 env(0.2, 0.3, 0.5);
         // throughput = last vertex weight or 1 if no vertex
-        Vec3 throughput = path.empty()? Vec3(1.0,1.0,1.0): path.back().weight;
-        result = throughput * env;
+        Vec3 result = path.empty()? Vec3(1.0,1.0,1.0): path.back().weight;
     }
     // gamma‐correct
     return Vec3(std::sqrt(result.x),std::sqrt(result.y),std::sqrt(result.z));

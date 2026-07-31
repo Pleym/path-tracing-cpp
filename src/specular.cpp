@@ -11,5 +11,5 @@ bool Specular::scatter(const Ray& ray_in,const HitInfo& hit,Vec3& attenuation,Ra
     Vec3 reflected=reflect(ray_in.direction.normalize(),hit.normal);
     scattered=Ray(hit.intersection,reflected);
     attenuation=albedo;
-    return true;
+    return (reflected.dot(hit.normal) > 0) ; // only have forward ray are handled
 }
