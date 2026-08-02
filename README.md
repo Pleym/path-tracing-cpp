@@ -2,6 +2,7 @@
 
 A physically based path tracing renderer in C++, originally built as a Master 1 team project, now maintained as a personal playground for rendering and performance work (SIMD, profiling, acceleration structures). Path tracing is a physically realistic rendering method that simulates the behavior of light in a 3D scene.
 
+![render_5000](render_image/output5000.png)
 ## Features
 
 - Rendering of 3D scenes with path tracing
