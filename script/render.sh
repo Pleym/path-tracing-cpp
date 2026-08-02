@@ -7,10 +7,10 @@ up_vector=$(sed -n "3p" parameters.txt)
 fov=$(sed -n "4p" parameters.txt)
 width=800
 height=600
-sample=1000
+sample=50
 output="output.ppm"
 depth=50
-mod=0
+mod=2
 cd ..
 make
 echo -e "$cam_pos\n$aim_point\n$up_vector\n$fov" | ./render $width $height $sample $output $depth $mod

@@ -1,4 +1,5 @@
 #include "render.h"
+#include "preview.h"
 
 int main(int argc,char **argv)
 {
@@ -47,9 +48,11 @@ int main(int argc,char **argv)
         std::cin>>num_iterations;
         renderMLT(width,height,scene,output_path,origin,lookat,v_up,v_fov,samples_per_pixel,max_depth,num_iterations);
     }
+    else if (render_mode==2)
+        renderPreview(width,height,scene,origin,lookat,v_up,v_fov,max_depth);
     else
     {
-        std::cerr<<"Invalid render mode.Use 0 for normal render or 1 for MLT."<< std::endl;
+        std::cerr<<"Invalid render mode.Use 0 for normal render, 1 for MLT or 2 for live preview."<< std::endl;
         exit(1);
     }
      // Record rendering end time

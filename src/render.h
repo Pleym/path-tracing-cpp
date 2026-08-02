@@ -8,6 +8,9 @@
 #include "dielectric.h"
 #include "mlt_path.h"
 
+#include <algorithm>
+
+
 // Calcule la couleur d'un point en fonction des intersections du rayon
 // Si le rayon touche un objet, calcule la couleur basée sur le matériau
 // Sinon, retourne la couleur du fond (ciel)
@@ -118,9 +121,9 @@ void renderMLT(int width,int height,const std::vector<Object*>& scene,char* outp
 
             col=col/static_cast<double>(samples_per_pixel);
             // Clamp
-            col.x = std::clamp(col.x, 0.0, 1.0);
-            col.y = std::clamp(col.y, 0.0, 1.0);
-            col.z = std::clamp(col.z, 0.0, 1.0);
+            col.x = std::clamp(col.x, 0.0f, 1.0f);
+            col.y = std::clamp(col.y, 0.0f, 1.0f);
+            col.z = std::clamp(col.z, 0.0f, 1.0f);
 
             // write to image buffer (v0=0 est le bas du cadre, ligne 0 du PPM = haut de l'image)
             int idx = 3 * ((h-1-i) * w + j);
@@ -173,12 +176,40 @@ std::vector<Object*> createScene()
 
     // Spheres of various materials
     scene.push_back(new Sphere(metal_material, 0.4, Vec3(-1.2, -1.6, -2.5)));
-    scene.push_back(new Sphere(glossy_material, 0.4, Vec3(-0.4, -1.6, -2.5)));
+    scene.push_back(new Sphere(glossy_material, 0.4, Vec3(-0.4, -1.6, -1.5)));
     scene.push_back(new Sphere(red_material, 0.4, Vec3(0.4, -1.6, -2.5)));
     scene.push_back(new Sphere(glass_material, 0.4, Vec3(1.2, -1.6, -2.5)));
     return scene;
 }
+/*
+void ProgressiveRender(int width,int height,const std::vector<Object*>& scene,char* outputPath,const Vec3& origin,const Vec3& lookat,
+            const Vec3& v_up, double v_fov,int samples_per_pixel,int max_depth){
 
+    std::vector<Vec3> accum(width*height,Vec3(0,0,0));
+    float ratio = static_cast<float>(width)/height;
+    Camera camera(origin,lookat,v_up,v_fov,ratio);
+    int pass = 0;
+    auto running = true;
+    while (running){
+        ++pass;
+        #pragma omp parallel for collapse(2) schedule(dynamic)
+        for (int i = 0;i < height; ++i) {
+            for (int j = 0; j <width; ++j) {
+                double u= (j+randomDouble())/width;
+                double v= (i+randomDouble())/height;
+                accum[i*width+j] = calculateColor(camera.getRay(u,v),scene,max_depth);
+            }
+        }
+        for (int i=0; i < height; ++i){
+            for (int j = 0; j < width; ++j){
+                Vec3 c = accum[i*width+j]/pass;
+                framebuffer[(height-1-i)*width+j] = pack(sqrt(c.x)+sqrt(c.y)+sqrt(c.z));
+            }
+        }
+        display(framebuffer);
+    }
+}
+*/
 /*
     A simple scene used only for performance testing,
     with very few light bounces and light CPU load,
@@ -196,3 +227,4 @@ std::vector<Object*> createTestScene()
 
     return scene;
 }
+*/
