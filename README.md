@@ -99,6 +99,10 @@ python3 convert_ppm.py [outputppm_path] [outputpng_path]
   - `firstCollision.h/.cpp` : Functions to compute the first ray-object intersection
   - `AABB.h/.cpp` : Axis-Aligned Bounding Box for spatial acceleration
   - `mlt_path.h/.cpp` : Functions related to path tracing using Metropolis Light Transport
+- `script/` : Contains shell scripts for rendering
+  - `render.sh` : Main rendering script
+  - `parameters.txt` : Text file containing rendering parameters
+  - `convert_ppm.py` : Python script to convert PPM files to other formats
 
 ## Project Architecture
 
