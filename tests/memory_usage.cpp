@@ -1,10 +1,25 @@
 #include <iostream>
 #include <sys/resource.h>
 #include "../src/render.h"
+#include <stdexcept>
 
+
+void argument_(int arg, int number_args) {
+    if (arg != number_args){
+        throw std::invalid_argument("<width> <height> <samples_per_pixel> <output_path> <max_depth> <render_mode>");
+    }
+}
 
 int main(int argc, char** argv)
 {
+    try {
+        argument_(argc, 7);
+    }
+    catch (const std::invalid_argument& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+
     int num_procs = omp_get_num_procs(); // Get the number of available CPU cores
     omp_set_num_threads(num_procs);      // Set the number of threads to the number of cores
 

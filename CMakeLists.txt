@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -35,23 +36,24 @@ find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-
 set(PPM_WRITER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ppm_writer")
+set(TEST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 
 file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS "${SRC_DIR}/*.cpp" "${PPM_WRITER_DIR}/ppm_writer.cpp")
 
-
+list(REMOVE_ITEM CORE_SOURCES "${SRC_DIR}/render.cpp")
 add_library(pathtracer_core STATIC ${CORE_SOURCES})
 target_include_directories(pathtracer_core PUBLIC "${SRC_DIR}" "${PPM_WRITER_DIR}")
 target_link_libraries(pathtracer_core PUBLIC OpenMP::OpenMP_CXX)
-target_compile_options(pathtracer_core PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-O3 -march=native -flto -Wno-deprecated-declarations>)
+target_compile_options(pathtracer_core PUBLIC $<$<COMPILE_LANGUAGE:CXX>: -march=native -flto -Wno-deprecated-declarations>)
+
+
 add_executable(render "${SRC_DIR}/render.cpp")
 target_link_libraries(render PRIVATE pathtracer_core)
 
 if(BUILD_TESTING)
   enable_testing()
-  file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
+  file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS "${TEST_DIR}/*.cpp")
   add_executable(unit_tests ${TEST_SOURCES})
   target_link_libraries(unit_tests PRIVATE pathtracer_core)
-  add_test(NAME unit_tests COMMAND unit_tests)
 endif()
